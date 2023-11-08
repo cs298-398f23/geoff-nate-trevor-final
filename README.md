@@ -4,4 +4,4 @@ An app that uses updated data scraped from [tfrrs.org](https://www.tfrrs.org/) t
 ### Project Members
 - Geoffrey Kleinberg
 - Nathan Hajel
-- Trevor Gray
+- Trevor Gray 
