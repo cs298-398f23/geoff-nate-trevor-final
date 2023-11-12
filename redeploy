@@ -1,0 +1,4 @@
+./down
+docker build --tag collector collector
+docker build --tag server server
+./up

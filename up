@@ -1,0 +1,4 @@
+docker run -d --network tfrrs -v $(pwd)/data:/data --name redis redis
+docker run -d --network tfrrs --name collector collector
+docker run -d --network tfrrs --name server -p 8000:8000 server
+
