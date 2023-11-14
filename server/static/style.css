@@ -1,0 +1,23 @@
+.body {
+    margin: 0;
+}
+
+.column-container {
+    position: fixed;
+    display: flex;
+    justify-content: space-between;
+    height: 100%; /* Ensure the container takes up the full height of the parent element */
+  }
+  
+  .scrollable {
+    overflow: auto; /* Add scrollbars when content overflows */
+  }
+  
+  .column {
+    flex: 1; /* Takes up available space and doesn't scroll */
+    padding: 10px;
+  }
+  
+
+
+  

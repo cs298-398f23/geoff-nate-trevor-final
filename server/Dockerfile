@@ -12,4 +12,7 @@ COPY server.py .
 RUN mkdir templates
 COPY templates/index.html templates
 
+RUN mkdir static
+COPY static/style.css static
+
 CMD [".venv/bin/gunicorn", "--bind", "0.0.0.0:8000", "server:app"]
