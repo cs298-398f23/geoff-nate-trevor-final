@@ -1,0 +1,5 @@
+yum install -y docker
+systemctl start docker
+docker network create tfrrs
+scripts/rebuild
+scripts/up

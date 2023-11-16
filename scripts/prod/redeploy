@@ -1,0 +1,4 @@
+scripts/down
+git pull origin main
+scripts/rebuild
+scripts/up
