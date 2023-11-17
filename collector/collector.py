@@ -14,6 +14,6 @@ if __name__ == '__main__':
     r.rpush('items1', json.dumps({'name': 'tfrrs3', 'value': 'res3'}))
 
     r.ltrim('items2', 1, 0)
-    r.rpush('items2', json.dumps({'name': 'tfrrs1', 'value': 'res1'}))
-    r.rpush('items2', json.dumps({'name': 'tfrrs2', 'value': 'res2'}))
-    r.rpush('items2', json.dumps({'name': 'tfrrs3', 'value': 'res3'}))
+    r.rpush('items2', json.dumps({'name': 'data1', 'value': 'res1'}))
+    r.rpush('items2', json.dumps({'name': 'data2', 'value': 'res2'}))
+    r.rpush('items2', json.dumps({'name': 'data3', 'value': 'res3'}))

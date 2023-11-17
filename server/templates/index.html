@@ -12,8 +12,8 @@
             <h1>Select a Year</h1>
             <ul id="year-list">
             <select name="year" id="year">
-                <option value="first">example1</option>
-                <option value="second">example2</option>// This is the default option
+                <option value="items1">example1</option>
+                <option value="items2">example2</option>// This is the default option
                 <!-- Each season will be loaded dynamically -->
             </select>
             </ul>
@@ -21,7 +21,7 @@
         </div>
         <div class="column scrollable">
             <h1>Results</h1>
-            <table>
+            <table id="data-table">
                 {% for item in items %}
                 <tr>
                     <td>{{ item.name }}</td>
@@ -36,5 +36,30 @@
             <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Animi omnis in temporibus nihil officia delectus cumque nesciunt vero quod eveniet, consectetur distinctio ab est accusamus vitae ut numquam porro magnam! Debitis explicabo a magnam culpa rem? Quae, pariatur. Amet voluptates distinctio consectetur aliquam odio vitae voluptatum! Asperiores odio quasi aperiam iure quaerat. Modi, unde voluptatibus, odio blanditiis tempore architecto velit nihil fuga vel qui exercitationem numquam veritatis amet magni cumque distinctio consequuntur, minus voluptate neque voluptas impedit natus totam adipisci dolorem! Nulla natus sequi ipsum necessitatibus laboriosam expedita culpa aliquam. Odit doloribus ex, molestias, magnam commodi aspernatur possimus error impedit voluptas cumque tempora! Quasi sit odit quisquam numquam veniam soluta molestiae repellendus iste itaque excepturi omnis eveniet blanditiis quos facere, hic ab dolorum, aut fugit, sequi nemo ea autem quae quam perferendis? Odio magni delectus, ducimus provident a aspernatur! Eligendi asperiores enim dolorem cupiditate hic alias, facilis veritatis nisi cum sint ipsa maiores dignissimos nemo nam illo harum perferendis nostrum reprehenderit magnam placeat saepe! Neque fuga reiciendis magnam nisi sit tempora possimus facilis ea est nemo cum nesciunt, accusantium esse quae iusto sequi maiores perferendis nobis reprehenderit illo. Cum culpa accusantium dolor corrupti illum nostrum accusamus placeat sit dolorem nam sequi quo est natus repellendus vitae fuga eaque reprehenderit id, totam voluptas, officia voluptatum sed quam? Veniam error fugit a iusto natus porro sequi vel doloribus voluptatum laborum voluptate voluptates molestias aliquid unde culpa sed aut nulla eius explicabo consequatur odit, commodi ipsam sapiente. Hic magni aliquam illo, vel quasi eius mollitia possimus voluptatem iusto enim adipisci? Molestias magni omnis commodi aliquid tempore impedit perferendis error fugiat corporis, corrupti minima sint nemo. Eum beatae dolor enim vitae? Maxime, quam veniam. Alias sunt possimus, dolorem et fugiat iure molestias quasi non incidunt voluptate! Voluptatem fugiat repellendus quasi consequatur totam repudiandae laborum deserunt aliquid consequuntur, neque dignissimos alias nisi minus sunt facilis quam incidunt officia, illum blanditiis corporis? Deleniti vero voluptates iure. Fugiat, atque. Officiis corporis eum in ducimus earum fugit fuga adipisci beatae eveniet deserunt iusto quas officia quisquam, esse hic soluta, sit dignissimos incidunt dicta quasi? Explicabo, numquam ad. Harum modi pariatur eos nesciunt voluptates? Nisi laborum harum, explicabo porro adipisci dignissimos distinctio, eaque iure tenetur deserunt officia a quae quos, at ipsam? Rerum dolorem cum beatae omnis fugiat? Mollitia, fugiat totam! Sint animi excepturi, sapiente delectus, molestias qui vel labore non amet similique eligendi harum soluta repellendus enim ab, quidem optio voluptatum maxime nesciunt numquam autem error sequi ullam? Dolor ab asperiores saepe ipsum cupiditate aperiam, recusandae similique impedit quaerat id magni magnam voluptatum modi excepturi illo repudiandae dolorum vitae hic eaque atque qui iste nobis aliquid. Quasi vitae ullam quas id hic quia exercitationem magni sed soluta, cupiditate impedit fuga nobis quo illo porro! Nemo repudiandae quidem voluptatum, laboriosam fugit ipsum. Cumque, nisi vero nemo culpa quia commodi nihil ipsam maiores quaerat facilis ea eligendi ipsa aliquam dolor cum aliquid consectetur odio sequi inventore, autem dolore magni iure praesentium animi? Consequuntur suscipit impedit repudiandae assumenda laudantium, aspernatur ullam.</p>
         </div>
     </div>
+    
+    <script>
+        selector = document.getElementById('year');
+        selector.addEventListener('input', function() {
+            changeData(selector.value);
+        });
+
+        function changeData(endpoint) {
+            document.getElementById('data-table').innerHTML = '';
+            fetch('/' + endpoint)
+            .then(response => response.json())
+            .then(data => {
+                for (var i = 0; i < data.length; i++) {
+                    var row = document.createElement('tr');
+                    var name = document.createElement('td');
+                    var value = document.createElement('td');
+                    name.innerHTML = data[i].name;
+                    value.innerHTML = data[i].value;
+                    row.appendChild(name);
+                    row.appendChild(value);
+                    document.getElementById('data-table').appendChild(row);
+                }
+            });
+        }
+    </script>
 </body>
 </html>
