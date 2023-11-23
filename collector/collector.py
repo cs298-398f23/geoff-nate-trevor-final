@@ -1,19 +1,27 @@
 import redis
 import json
+import scraper
 
 host = 'redis'
 port = 6379
 
 r = redis.Redis(host=host, port=port, decode_responses=True)
 
+seasons = {
+    '4011': 'Indoor 2023', 
+    '4249': 'Outdoor 2023'
+}
+
+current_season_id = '4249'
+
 if __name__ == '__main__':
 
-    r.ltrim('items1', 1, 0)
-    r.rpush('items1', json.dumps({'name': 'tfrrs1', 'value': 'res1'}))
-    r.rpush('items1', json.dumps({'name': 'tfrrs2', 'value': 'res2'}))
-    r.rpush('items1', json.dumps({'name': 'tfrrs3', 'value': 'res3'}))
 
-    r.ltrim('items2', 1, 0)
-    r.rpush('items2', json.dumps({'name': 'data1', 'value': 'res1'}))
-    r.rpush('items2', json.dumps({'name': 'data2', 'value': 'res2'}))
-    r.rpush('items2', json.dumps({'name': 'data3', 'value': 'res3'}))
+    for season_id in seasons.keys():
+        if r.hget('season_ids', season_id) == None:
+            r.hset('season_ids', season_id, seasons[season_id])
+            
+        if r.hget('seasons_m', season_id) == None:
+            r.hset('seasons_m', season_id, json.dumps(scraper.get_season(season_id, 'm')))
+    
+    r.hset('seasons_m', current_season_id, json.dumps(scraper.get_season(current_season_id, 'm')))

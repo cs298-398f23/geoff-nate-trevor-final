@@ -26,7 +26,7 @@ Get results for the specificied season and gender: `/results?season={season}&gen
 
 ##### Query Parameters
 
-`season` (required): The season to find the results for. Example 'o23' for Outdoor 2023 or 'i23' for Indoor 2023.
+`season` (required): The season to find the results for, using the TFRRS season ID. Example '4249' for Outdoor 2023 or '4011' for Indoor 2023.
 
 `gender` (required): Either 'm' for Male or 'f' for Female.
 
@@ -55,7 +55,7 @@ Response is a JSON object, modeled below:
 ```
 {
     'seasons': [
-        {'displayName': 'Outdoor 2023', 'endpointName': 'o23', 'tfrrsID': 4249},
+        {seasonID: 'displayName'},
         ...
     ]
 }

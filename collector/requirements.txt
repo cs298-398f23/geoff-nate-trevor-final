@@ -1,1 +1,3 @@
 redis
+bs4
+requests

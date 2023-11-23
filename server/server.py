@@ -1,4 +1,4 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, request
 import redis
 import json
 
@@ -11,18 +11,21 @@ app = Flask(__name__)
 
 @app.route('/')
 def home():
-    items = [json.loads(item) for item in r.lrange('items1', 0, -1)]
-    return render_template('index.html', items=items)
+    return render_template('index.html')
 
-@app.route('/items1')
-def items1():
-    items = [json.loads(item) for item in r.lrange('items1', 0, -1)]
-    return items
+@app.route('/seasons')
+def seasons():
+    return {
+        'seasons': r.hgetall('season_ids')
+    }
 
-@app.route('/items2')
-def items2():
-    items = [json.loads(item) for item in r.lrange('items2', 0, -1)]
-    return items
+@app.route('/results')
+def results():
+    season = request.args.get('season')
+    # use the query parameter for this
+    gender = 'm'
+    return json.loads(r.hget(f'seasons_{gender}', season))
+
 
 if __name__ == '__main__':
    app.run(host='0.0.0.0', port=8000)
