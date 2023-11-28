@@ -32,7 +32,17 @@ seasons = {
 
 current_season_id = '4249'
 
+def clear_hash(hash, seasons, r):
+    for key in r.hgetall(hash).keys():
+        if not key in seasons.keys():
+            r.hdel(hash, key)
+
 if __name__ == '__main__':
+
+    # clear the database of bad data
+    clear_hash('season_ids', seasons, r)
+    clear_hash('seasons_m', seasons, r)
+    clear_hash('seasons_f', seasons, r)
 
     # separate the for loops so the IDs are set before the seasons
     # so that it loads quickly on new deploys
