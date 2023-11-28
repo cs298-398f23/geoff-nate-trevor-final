@@ -46,10 +46,42 @@
             fetch(`/results?season=${season}`)
             .then(response => response.json())
             .then(data => {
-                // turn this data into tables
                 console.log(data);
+                // create table dynamically
+                let tableContainer = document.getElementById('data-table');
+                for (let eventName in data) {
+                    let table = document.createElement('table');
+                    let eventRow = document.createElement('tr');
+                    
+                    // Create table headers
+                    let headers = Object.keys(data[eventName][0]);
+                    for (let i = 0; i < headers.length; i++) {
+                        let headerCell = document.createElement('th');
+                        headerCell.textContent = headers[i];
+                        eventRow.appendChild(headerCell);
+                    }
+                    table.appendChild(eventRow);
+                    
+                    // Create table rows
+                    for (let i = 0; i < Math.min(data[eventName].length, 8); i++) {
+                        let event = data[eventName][i];
+                        let eventRow = document.createElement('tr');
+                        
+                        // Create table cells
+                        for (let j = 0; j < headers.length; j++) {
+                            let dataCell = document.createElement('td');
+                            dataCell.textContent = event[headers[j]];
+                            eventRow.appendChild(dataCell);
+                        }
+                        
+                        table.appendChild(eventRow);
+                    }
+                    
+                    tableContainer.appendChild(table);
+                }
             });
         }
+        
 
         function loadSeasons() {
             fetch('/seasons')
