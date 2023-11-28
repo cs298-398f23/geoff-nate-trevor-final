@@ -21,7 +21,7 @@ seasons = {
     '1956': 'Outdoor 2017',
     '1850': 'Indoor 2017',
     '1746': 'Outdoor 2016',
-    '1673': 'Indoor 2016',
+    '1637': 'Indoor 2016',
     '1498': 'Outdoor 2015',
     '1354': 'Indoor 2015',
     '1321': 'Outdoor 2014',
