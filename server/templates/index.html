@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Test Site</title>
+    <title>TFRRS Meet Simulator</title>
     <link rel="stylesheet" href="static/style.css">
 </head>
 <body>
@@ -17,7 +17,7 @@
             </div>
         <div class="column scrollable">
             <h1>Results</h1>
-            <table id="data-table">
+            <table id="data-container">
             </table>
         </div>
         <div class="column">
@@ -51,14 +51,51 @@
 
         // add query parameter for gender
         function changeSeason(season) {
-            document.getElementById('data-table').innerHTML = '';
+            document.getElementById('data-container').innerHTML = '';
             fetch(`/results?season=${season}`)
             .then(response => response.json())
             .then(data => {
-                // turn this data into tables
                 console.log(data);
+                // create table dynamically
+                let tableContainer = document.getElementById('data-container');
+                for (let eventName in data) {
+                    let eventHeader = document.createElement('h3');
+                    eventHeader.textContent = eventName;
+                    tableContainer.appendChild(eventHeader);
+
+                    let table = document.createElement('table');
+                    let eventRow = document.createElement('tr');
+                    
+                    // Create table headers
+                    let headers = ['place', 'name', 'team', 'mark'];
+                    for (let i = 0; i < headers.length; i++) {
+                        let headerCell = document.createElement('th');
+                        let capitalized = headers[i].charAt(0).toUpperCase() + headers[i].slice(1);
+                        headerCell.textContent = capitalized;
+                        eventRow.appendChild(headerCell);
+                    }
+                    table.appendChild(eventRow);
+                    
+                    // Create table rows
+                    for (let i = 0; i < data[eventName].length; i++) {
+                        let event = data[eventName][i];
+                        let eventRow = document.createElement('tr');
+                        
+                        // Create table cells
+                        for (let j = 0; j < headers.length; j++) {
+                            let dataCell = document.createElement('td');
+                            dataCell.textContent = event[headers[j]];
+                            eventRow.appendChild(dataCell);
+                        }
+                        
+                        table.appendChild(eventRow);
+                    }
+                    
+                    tableContainer.appendChild(table);
+                }
             });
         }
+        
 
         function loadSeasons() {
             fetch('/seasons')
