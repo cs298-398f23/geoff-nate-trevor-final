@@ -57,5 +57,7 @@ if __name__ == '__main__':
         if r.hget('seasons_f', season_id) == None:
             r.hset('seasons_f', season_id, json.dumps(scraper.get_season(season_id, 'f')))
 
+    r.set('current_season', current_season_id)
+
     r.hset('seasons_m', current_season_id, json.dumps(scraper.get_season(current_season_id, 'm')))
     r.hset('seasons_f', current_season_id, json.dumps(scraper.get_season(current_season_id, 'f')))

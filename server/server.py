@@ -19,11 +19,17 @@ def seasons():
         'seasons': r.hgetall('season_ids')
     }
 
+@app.route('/currentSeason')
+def currentSeason():
+    return {
+        'current_season': r.get('current_season')
+    }
+
 @app.route('/results')
 def results():
     season = request.args.get('season')
     # use the query parameter for this
-    gender = 'm'
+    gender = request.args.get('gender')
     return json.loads(r.hget(f'seasons_{gender}', season))
 
 
