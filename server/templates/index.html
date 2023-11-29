@@ -8,24 +8,26 @@
 </head>
 <body>
     <div class="column-container">
-        <div class="column">
+        <div class="column select-column">
             <h1>Select a Year</h1>
-                <select name="year" id="seasonSelect">
+                <select name="year" id="season-select">
                     <!-- Each season will be loaded dynamically -->
                 </select>
                 <!-- Selector for gender-->
-                <select name="gender" id="genderSelect">
+                <select name="gender" id="gender-select">
                     <option value="m">Male</option>
                     <option value="f">Female</option>
                 </select>
             </div>
-        <div class="column scrollable">
+        <div class="column scrollable data-column">
             <h1>Results</h1>
-            <table id="data-container">
-            </table>
+            <div id="data-container">
+            </div>
         </div>
-        <div class="column">
+        <div class="column result-column">
             <h1>Team Results</h1>
+            <div id="result-container">
+            </div>
         </div>
     </div>
     
@@ -33,63 +35,103 @@
         document.addEventListener('DOMContentLoaded', function() {
             loadSeasons();
 
-            let seasonSelector = document.getElementById('seasonSelect');
+            let seasonSelector = document.getElementById('season-select');
             seasonSelector.addEventListener('input', function() {
                 updateData();
             });
 
-            let genderSelector = document.getElementById('genderSelect');
+            let genderSelector = document.getElementById('gender-select');
             genderSelector.addEventListener('input', function() {
                 updateData();
             });
         });
 
-        // add query parameter for gender
+        function updateTables(data) {
+            let tableContainer = document.getElementById('data-container');
+            for (let eventName in data) {
+                let eventHeader = document.createElement('h3');
+                eventHeader.textContent = eventName;
+                tableContainer.appendChild(eventHeader);
+
+                let table = document.createElement('table');
+                let eventRow = document.createElement('tr');
+                
+                // Create table headers
+                let headers = ['place', 'name', 'team', 'mark'];
+                for (let i = 0; i < headers.length; i++) {
+                    let headerCell = document.createElement('th');
+                    let capitalized = headers[i].charAt(0).toUpperCase() + headers[i].slice(1);
+                    headerCell.textContent = capitalized;
+                    eventRow.appendChild(headerCell);
+                }
+                table.appendChild(eventRow);
+                
+                // Create table rows
+                for (let i = 0; i < data[eventName].length; i++) {
+                    let event = data[eventName][i];
+                    let eventRow = document.createElement('tr');
+                    
+                    // Create table cells
+                    for (let j = 0; j < headers.length; j++) {
+                        let dataCell = document.createElement('td');
+                        dataCell.textContent = event[headers[j]];
+                        eventRow.appendChild(dataCell);
+                    }
+                    
+                    table.appendChild(eventRow);
+                }
+                
+                tableContainer.appendChild(table);
+            }
+        }
+
+        function updateScores(data) {
+            let scores = {};
+            let placeScores = [10, 8, 6, 5, 4, 3, 2, 1];
+            for (let event in data) {
+                for (let i = 0; i < data[event].length; i++) {
+                    let team = data[event][i]['team'];
+                    let place = data[event][i]['place'];
+                    if (place > 8) {
+                        continue;
+                    }
+                    if (team in scores) {
+                        scores[team] += placeScores[place - 1];
+                    } else {
+                        scores[team] = placeScores[place - 1];
+                    }
+                }
+            }
+            let sortedTeams = Object.keys(scores).sort(function(a, b) {
+                return scores[b] - scores[a];
+            });
+            updateScoreDisplay(sortedTeams, scores);
+        }
+
+        function updateScoreDisplay(sortedTeams, scores) {
+            const scoreDiv = document.getElementById('result-container');
+            scoreDiv.innerHTML = '';
+            for (let team in sortedTeams) { 
+                let teamName = document.createElement('h3');
+                teamName.textContent = sortedTeams[team];
+                scoreDiv.appendChild(teamName);
+                let score = document.createElement('p');
+                score.textContent = scores[sortedTeams[team]];
+                scoreDiv.appendChild(score);
+            }
+        }
+
         function updateData() {
             document.getElementById('data-container').innerHTML = '';
-            season = document.getElementById('seasonSelect').value;
-            gender = document.getElementById('genderSelect').value;
+            season = document.getElementById('season-select').value;
+            gender = document.getElementById('gender-select').value;
             fetch(`/results?season=${season}&gender=${gender}`)
             .then(response => response.json())
             .then(data => {
-                console.log(data);
+                // console.log(data);
                 // create table dynamically
-                let tableContainer = document.getElementById('data-container');
-                for (let eventName in data) {
-                    let eventHeader = document.createElement('h3');
-                    eventHeader.textContent = eventName;
-                    tableContainer.appendChild(eventHeader);
-
-                    let table = document.createElement('table');
-                    let eventRow = document.createElement('tr');
-                    
-                    // Create table headers
-                    let headers = ['place', 'name', 'team', 'mark'];
-                    for (let i = 0; i < headers.length; i++) {
-                        let headerCell = document.createElement('th');
-                        let capitalized = headers[i].charAt(0).toUpperCase() + headers[i].slice(1);
-                        headerCell.textContent = capitalized;
-                        eventRow.appendChild(headerCell);
-                    }
-                    table.appendChild(eventRow);
-                    
-                    // Create table rows
-                    for (let i = 0; i < data[eventName].length; i++) {
-                        let event = data[eventName][i];
-                        let eventRow = document.createElement('tr');
-                        
-                        // Create table cells
-                        for (let j = 0; j < headers.length; j++) {
-                            let dataCell = document.createElement('td');
-                            dataCell.textContent = event[headers[j]];
-                            eventRow.appendChild(dataCell);
-                        }
-                        
-                        table.appendChild(eventRow);
-                    }
-                    
-                    tableContainer.appendChild(table);
-                }
+                updateTables(data);
+                updateScores(data);
             });
         }
         
@@ -98,7 +140,7 @@
             fetch('/seasons')
             .then(response => response.json())
             .then(data => {
-                selector = document.getElementById('seasonSelect');
+                selector = document.getElementById('season-select');
                 for (let id in data['seasons']) {
                     let option = document.createElement('option');
                     option.value = id;

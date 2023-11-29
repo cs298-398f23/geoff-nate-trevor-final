@@ -6,6 +6,7 @@
     position: fixed;
     display: flex;
     justify-content: space-between;
+    width: 100%;
     height: 100%; /* Ensure the container takes up the full height of the parent element */
   }
   
@@ -14,8 +15,22 @@
   }
   
   .column {
-    flex: 1; /* Takes up available space and doesn't scroll */
     padding: 10px;
+    float: left;
+  }
+
+  .select-column {
+    width: 20%; /* Set the width of the column */
+    background-color: #f1f1f1;
+  }
+
+  .data-column {
+    width: 50%; /* Set the width of the column */
+  }
+
+  .result-column {
+    width: 30%; /* Set the width of the column */
+    background-color: #f1f1f1;
   }
   
 
