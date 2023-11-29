@@ -37,8 +37,17 @@
         });
 
         // add a selector for gender
+        <select name="gender">
+            <option value="male">Male</option>
+            <option value="female">Female</option>
+        </select>
 
         // add event listener for gender selector, make sure to use selected season
+        var genderSelector = document.querySelector('select[name="gender"]');
+        genderSelector.addEventListener('change', function() {
+        var selectedGender = this.value;
+        console.log('Selected gender: ' + selectedGender);
+        });
 
         // add query parameter for gender
         function changeSeason(season) {
