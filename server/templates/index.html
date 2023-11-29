@@ -92,8 +92,15 @@
                 let eventDiv = document.createElement('div');
                 eventDiv.id = eventName;
                 let eventHeader = document.createElement('h3');
+                
                 eventHeader.textContent = eventName;
                 eventDiv.appendChild(eventHeader);
+
+                // Create checkbox
+                let checkbox = document.createElement('input');
+                checkbox.type = 'checkbox';
+                checkbox.checked = true;
+                eventHeader.appendChild(checkbox);
 
                 let table = document.createElement('table');
                 let eventRow = document.createElement('tr');
