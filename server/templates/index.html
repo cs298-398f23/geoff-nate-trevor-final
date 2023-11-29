@@ -46,12 +46,44 @@
             });
         });
 
-        function moveResultUp() {
-            console.log('up');
+        function moveResult(button, direction) {
+            let delta;
+            let sibling;
+            if (direction === 'up') {
+                delta = 1;
+                sibling = button.parentElement.parentElement.previousElementSibling;
+            } else {
+                delta = -1;
+                sibling = button.parentElement.parentElement.nextElementSibling;
+            }
+            const rowToMove = button.parentElement.parentElement;
+            rowToMove.children[0].textContent = +rowToMove.children[0].textContent - delta;
+            sibling.children[0].textContent = +sibling.children[0].textContent + delta;
+            if (direction === 'up') {
+                rowToMove.parentElement.insertBefore(rowToMove, sibling);
+            } else {
+                rowToMove.parentElement.insertBefore(sibling, rowToMove);
+            }
+            updateScores();
+            resetButtons(rowToMove.parentElement);
         }
 
-        function moveResultDown() {
-            console.log('down');
+        function resetButtons(table) {
+            for (let i = 1; i < table.children.length; i++) {
+                let row = table.children[i];
+                let upButton = row.children[4].children[0];
+                let downButton = row.children[4].children[1];
+                if (i === 1) {
+                    upButton.disabled = true;
+                } else {
+                    upButton.disabled = false;
+                }
+                if (i === table.children.length - 1) {
+                    downButton.disabled = true;
+                } else {
+                    downButton.disabled = false;
+                }
+            }
         }
 
         function updateTables(data) {
@@ -92,27 +124,25 @@
                     let upButton = document.createElement('button');
                     upButton.textContent = 'Up';
                     upButton.addEventListener('click', function() {
-                        moveResultUp();
+                        moveResult(upButton, 'up');
                     });
                     let downButton = document.createElement('button');
                     downButton.textContent = 'Down';
                     downButton.addEventListener('click', function() {
-                        moveResultDown();
+                        moveResult(downButton, 'down');
                     });
 
                     // Add buttons to row
                     let buttonCell = document.createElement('td');
-                    if (i !== 0 ) {
-                        buttonCell.appendChild(upButton);
-                    }
-                    if (i !== data[eventName].length - 1) {
-                        buttonCell.appendChild(downButton);
-                    }
+                    buttonCell.appendChild(upButton);
+                    buttonCell.appendChild(downButton);
                     eventRow.appendChild(buttonCell);
 
                     
                     table.appendChild(eventRow);
                 }
+
+                resetButtons(table);
                 
                 eventDiv.appendChild(table);
 
