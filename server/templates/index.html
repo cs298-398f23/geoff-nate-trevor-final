@@ -50,8 +50,15 @@
             let tableContainer = document.getElementById('data-container');
             for (let eventName in data) {
                 let eventHeader = document.createElement('h3');
+                
                 eventHeader.textContent = eventName;
                 tableContainer.appendChild(eventHeader);
+
+                // Create checkbox
+                let checkbox = document.createElement('input');
+                checkbox.type = 'checkbox';
+                checkbox.checked = true;
+                eventHeader.appendChild(checkbox);
 
                 let table = document.createElement('table');
                 let eventRow = document.createElement('tr');
