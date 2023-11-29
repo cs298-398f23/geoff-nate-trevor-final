@@ -6,6 +6,10 @@ An app that uses updated data scraped from [tfrrs.org](https://www.tfrrs.org/) t
 - Nathan Hajel
 - Trevor Gray
 
+## System Architecture
+
+![System Diagram](architecture.png)
+
 ## Deploy the Site
 
 ### Run on Localhost
@@ -58,5 +62,19 @@ Response is a JSON object, modeled below:
         {seasonID: 'displayName'},
         ...
     ]
+}
+```
+
+### Current Season
+
+Get the current season: `/currentSeason`
+
+##### Response
+
+Response is a JSON object, modeled below:
+
+```
+{
+    'current_season': current_season
 }
 ```

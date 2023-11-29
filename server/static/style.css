@@ -33,6 +33,15 @@
     background-color: #f1f1f1;
   }
   
+  table {
+    border: 1px solid #ddd; /* Add a thin border to the table */
+    border-collapse: collapse; /* Collapse borders */
+  }
+
+  tr, td, th {
+    border: 1px solid #ddd; /* Add a thin border to each table row */
+    padding: 5px
+  }
 
 
   

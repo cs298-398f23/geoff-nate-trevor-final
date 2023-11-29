@@ -46,13 +46,23 @@
             });
         });
 
+        function moveResultUp() {
+            console.log('up');
+        }
+
+        function moveResultDown() {
+            console.log('down');
+        }
+
         function updateTables(data) {
             let tableContainer = document.getElementById('data-container');
             for (let eventName in data) {
+                let eventDiv = document.createElement('div');
+                eventDiv.id = eventName;
                 let eventHeader = document.createElement('h3');
                 
                 eventHeader.textContent = eventName;
-                tableContainer.appendChild(eventHeader);
+                eventDiv.appendChild(eventHeader);
 
                 // Create checkbox
                 let checkbox = document.createElement('input');
@@ -84,21 +94,50 @@
                         dataCell.textContent = event[headers[j]];
                         eventRow.appendChild(dataCell);
                     }
+
+                    // Create buttons
+                    let upButton = document.createElement('button');
+                    upButton.textContent = 'Up';
+                    upButton.addEventListener('click', function() {
+                        moveResultUp();
+                    });
+                    let downButton = document.createElement('button');
+                    downButton.textContent = 'Down';
+                    downButton.addEventListener('click', function() {
+                        moveResultDown();
+                    });
+
+                    // Add buttons to row
+                    let buttonCell = document.createElement('td');
+                    if (i !== 0 ) {
+                        buttonCell.appendChild(upButton);
+                    }
+                    if (i !== data[eventName].length - 1) {
+                        buttonCell.appendChild(downButton);
+                    }
+                    eventRow.appendChild(buttonCell);
+
                     
                     table.appendChild(eventRow);
                 }
                 
-                tableContainer.appendChild(table);
+                eventDiv.appendChild(table);
+
+                tableContainer.appendChild(eventDiv);
             }
         }
 
-        function updateScores(data) {
+        function updateScores() {
             let scores = {};
             let placeScores = [10, 8, 6, 5, 4, 3, 2, 1];
-            for (let event in data) {
-                for (let i = 0; i < data[event].length; i++) {
-                    let team = data[event][i]['team'];
-                    let place = data[event][i]['place'];
+
+            tableContainer = document.getElementById('data-container');
+            tables = tableContainer.children;
+            for (let event = 0; event < tables.length; event++) {
+                data = tableContainer.children[event].children[1].children;
+                for (let i = 1; i < data.length; i++) {
+                    let team = data[i].children[2].textContent;
+                    let place = +data[i].children[0].textContent;
                     if (place > 8) {
                         continue;
                     }
