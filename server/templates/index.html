@@ -44,6 +44,7 @@
             genderSelector.addEventListener('input', function() {
                 updateData();
             });
+
         });
 
         function moveResultUp() {
@@ -65,10 +66,14 @@
                 eventDiv.appendChild(eventHeader);
 
                 // Create checkbox
+                // add event listener to checkbox to update scores
                 let checkbox = document.createElement('input');
                 checkbox.type = 'checkbox';
                 checkbox.checked = true;
                 eventHeader.appendChild(checkbox);
+                checkbox.addEventListener('click', function() {
+                    updateScores();
+                });
 
                 let table = document.createElement('table');
                 let eventRow = document.createElement('tr');
@@ -127,6 +132,7 @@
             }
         }
 
+
         function updateScores() {
             let scores = {};
             let placeScores = [10, 8, 6, 5, 4, 3, 2, 1];
@@ -135,6 +141,12 @@
             tables = tableContainer.children;
             for (let event = 0; event < tables.length; event++) {
                 data = tableContainer.children[event].children[1].children;
+                if (!tableContainer.children[event].children[0].children[0].checked) {
+                    continue;
+                }
+                // check for checkbox is checked
+                // add event listener to checkbox to update scores
+                console.log(tableContainer.children[event].children[0].children[0].checked);
                 for (let i = 1; i < data.length; i++) {
                     let team = data[i].children[2].textContent;
                     let place = +data[i].children[0].textContent;
