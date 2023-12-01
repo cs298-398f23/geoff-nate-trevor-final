@@ -132,8 +132,12 @@
                     let event = data[eventName][i];
                     let eventRow = document.createElement('tr');
                     
+                    let placeCell = document.createElement('td');
+                    placeCell.textContent = i + 1;
+                    eventRow.appendChild(placeCell);
+                    
                     // Create table cells
-                    for (let j = 0; j < headers.length; j++) {
+                    for (let j = 1; j < headers.length; j++) {
                         let dataCell = document.createElement('td');
                         dataCell.textContent = event[headers[j]];
                         eventRow.appendChild(dataCell);
