@@ -21,6 +21,7 @@
             </div>
         <div class="column scrollable data-column">
             <h1>Results</h1>
+            <button id="reset-button">Reset Tables</button>
             <div id="data-container">
             </div>
         </div>
@@ -43,6 +44,11 @@
             let genderSelector = document.getElementById('gender-select');
             genderSelector.addEventListener('input', function() {
                 updateData();
+            });
+
+            let resetButton = document.getElementById('reset-button');
+            resetButton.addEventListener('click', function() {
+                resetTable();
             });
 
         });
@@ -98,7 +104,6 @@
                 eventDiv.appendChild(eventHeader);
 
                 // Create checkbox
-                // add event listener to checkbox to update scores
                 let checkbox = document.createElement('input');
                 checkbox.type = 'checkbox';
                 checkbox.checked = true;
@@ -161,7 +166,16 @@
                 tableContainer.appendChild(eventDiv);
             }
         }
+        
+        function resetTable() {
+            for (checkbox of document.querySelectorAll('input[type="checkbox"]')) {
+                if (!checkbox.checked) {
+                    checkbox.checked = true;
 
+                }
+            }
+            updateData();
+        }
 
         function updateScores() {
             let scores = {};
@@ -174,9 +188,8 @@
                 if (!tableContainer.children[event].children[0].children[0].checked) {
                     continue;
                 }
-                // check for checkbox is checked
-                // add event listener to checkbox to update scores
-                console.log(tableContainer.children[event].children[0].children[0].checked);
+                
+                // console.log(tableContainer.children[event].children[0].children[0].checked);
                 for (let i = 1; i < data.length; i++) {
                     let team = data[i].children[2].textContent;
                     let place = +data[i].children[0].textContent;
