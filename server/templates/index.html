@@ -35,6 +35,13 @@
     </div>
     
     <script>
+        // Jumps to event table when event is selected from the drop down menu
+        var eventSelector = document.getElementById('event');
+        eventSelector.addEventListener('change', function() {
+        var selectedEvent = this.value;
+        window.location.hash = selectedEvent;
+        });
+
         document.addEventListener('DOMContentLoaded', function() {
             loadSeasons();
 
