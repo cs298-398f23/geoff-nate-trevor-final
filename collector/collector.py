@@ -1,6 +1,7 @@
 import redis
 import json
 import scraper
+import time
 
 host = 'redis'
 port = 6379
@@ -8,6 +9,7 @@ port = 6379
 r = redis.Redis(host=host, port=port, decode_responses=True)
 
 seasons = {
+    '4444': 'Indoor 2024',
     '4249': 'Outdoor 2023',
     '4011': 'Indoor 2023', 
     '3812': 'Outdoor 2022',
@@ -30,7 +32,7 @@ seasons = {
     '1006': 'Indoor 2013'
 }
 
-current_season_id = '4249'
+current_season_id = '4444'
 
 def clear_hash(hash, seasons, r):
     for key in r.hgetall(hash).keys():
@@ -59,5 +61,9 @@ if __name__ == '__main__':
 
     r.set('current_season', current_season_id)
 
-    r.hset('seasons_m', current_season_id, json.dumps(scraper.get_season(current_season_id, 'm')))
-    r.hset('seasons_f', current_season_id, json.dumps(scraper.get_season(current_season_id, 'f')))
+    while True:
+
+        r.hset('seasons_m', current_season_id, json.dumps(scraper.get_season(current_season_id, 'm')))
+        r.hset('seasons_f', current_season_id, json.dumps(scraper.get_season(current_season_id, 'f')))
+
+        time.sleep(60 * 60 * 24)
