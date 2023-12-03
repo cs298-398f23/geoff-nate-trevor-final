@@ -1,6 +1,7 @@
 import redis
 import json
 import scraper
+import time
 
 host = 'redis'
 port = 6379
@@ -60,5 +61,9 @@ if __name__ == '__main__':
 
     r.set('current_season', current_season_id)
 
-    r.hset('seasons_m', current_season_id, json.dumps(scraper.get_season(current_season_id, 'm')))
-    r.hset('seasons_f', current_season_id, json.dumps(scraper.get_season(current_season_id, 'f')))
+    while True:
+
+        r.hset('seasons_m', current_season_id, json.dumps(scraper.get_season(current_season_id, 'm')))
+        r.hset('seasons_f', current_season_id, json.dumps(scraper.get_season(current_season_id, 'f')))
+
+        time.sleep(60 * 60 * 24)

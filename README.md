@@ -10,6 +10,10 @@ An app that uses updated data scraped from [tfrrs.org](https://www.tfrrs.org/) t
 
 ![System Diagram](architecture.png)
 
+## Test the System
+
+To test the system, run `scripts/test` from the root directory.
+
 ## Deploy the Site
 
 ### Run on Localhost

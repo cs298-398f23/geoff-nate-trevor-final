@@ -1,0 +1,4 @@
+scripts/dev/redeploy
+docker build --tag test tests
+docker run --network tfrrs --name test -v $(pwd)/server:/app/server test
+docker rm -f test
