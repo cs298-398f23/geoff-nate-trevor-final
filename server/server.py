@@ -32,6 +32,28 @@ def results():
     gender = request.args.get('gender')
     return json.loads(r.hget(f'seasons_{gender}', season))
 
+@app.route('/saveResults', methods=['POST'])
+def saveResults():
+    if request.method == 'POST':
+        saved = r.lrange('saved_seasons', 0, -1)
+        if saved == None:
+            saved = []
+        next_id = len(saved) + 1
+        data = request.get_json()
+        name = data['saveName']
+        r.rpush('saved_seasons', name)
+        print(name)
+        r.hset('saved_results', next_id, json.dumps(data['results']))
+        return {
+            'id': next_id,
+            'name': name
+        }
+    
+@app.route('/loadSaved')
+def loadSaved():
+    return json.loads(r.hget('saved_results', request.args.get('id')))
+
+
 
 if __name__ == '__main__':
    app.run(host='0.0.0.0', port=8000)
