@@ -29,6 +29,16 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     let selectSave = document.getElementById('saved-results');
+    fetch('/savedResults')
+    .then(response => response.json())
+    .then(data => {
+        for (let id in data['saved_results']) {
+            let option = document.createElement('option');
+            option.value = id;
+            option.innerHTML = data['saved_results'][id];
+            selectSave.appendChild(option);
+        }
+    });
     selectSave.addEventListener('change', function() {
         let id = this.value;
         fetch(`/loadSaved?id=${id}`)

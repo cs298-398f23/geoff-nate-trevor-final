@@ -9,6 +9,9 @@ r = redis.Redis(host=host, port=port, decode_responses=True)
 
 app = Flask(__name__)
 
+r.delete('saved_seasons')
+r.delete('saved_results')
+
 @app.route('/')
 def home():
     return render_template('index.html')
@@ -38,7 +41,7 @@ def saveResults():
         saved = r.lrange('saved_seasons', 0, -1)
         if saved == None:
             saved = []
-        next_id = len(saved) + 1
+        next_id = len(saved)
         data = request.get_json()
         name = data['saveName']
         r.rpush('saved_seasons', name)
@@ -52,6 +55,12 @@ def saveResults():
 @app.route('/loadSaved')
 def loadSaved():
     return json.loads(r.hget('saved_results', request.args.get('id')))
+
+@app.route('/savedResults')
+def savedResults():
+    return {
+        'saved_results': r.lrange('saved_seasons', 0, -1)
+    }
 
 
 
