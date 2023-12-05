@@ -82,3 +82,64 @@ Response is a JSON object, modeled below:
     'current_season': current_season
 }
 ```
+
+### Load Saved Scenario
+
+Load a scenario that was saved: `/loadSaved?id={id}`
+
+##### Query Parameters
+
+`id` (required): The ID of the saved scenario.
+
+##### Response
+
+Response is a JSON object, modeled below:
+
+```
+{
+    'eventName': [
+        {'place': 1, 'name': 'Name', 'team': 'Team', 'mark': 'Time/Distance'},
+        ...
+    ],
+    ...
+}
+```
+
+### Get All Saved Scenarios
+
+Get a list of all saved scenario names: `/savedResults`
+
+##### Response
+
+Response is a JSON object, modeled below:
+
+```
+{
+    'saved_results': ['name1', 'name2', ...]
+}
+```
+
+### Save a Scenario
+
+Save the current state as a scenario: `/saveResults`
+
+##### Request Method
+
+Must be sent as a  `POST` request.
+
+##### Body Format
+
+Body is a JSON object, modeled below:
+
+```
+{
+    'saveName': saveName,
+    'results': {
+        'eventName': [
+            {'place': 1, 'name': 'Name', 'team': 'Team', 'mark': 'Time/Distance'},
+            ...
+        ],
+        ...
+    }
+}
+```
