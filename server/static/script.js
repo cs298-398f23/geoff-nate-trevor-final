@@ -4,11 +4,13 @@ document.addEventListener('DOMContentLoaded', function() {
     let seasonSelector = document.getElementById('season-select');
     seasonSelector.addEventListener('input', function() {
         updateData();
+        updateSavedResults();
     });
 
     let genderSelector = document.getElementById('gender-select');
     genderSelector.addEventListener('input', function() {
         updateData();
+        updateSavedResults();
     });
 
     let resetButton = document.getElementById('reset-button');
@@ -29,19 +31,20 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     let selectSave = document.getElementById('saved-results');
-    fetch('/savedResults')
-    .then(response => response.json())
-    .then(data => {
-        for (let id in data['saved_results']) {
-            let option = document.createElement('option');
-            option.value = id;
-            option.innerHTML = data['saved_results'][id];
-            selectSave.appendChild(option);
-        }
-    });
-    selectSave.addEventListener('change', function() {
-        let id = this.value;
-        fetch(`/loadSaved?id=${id}`)
+    // fetch(`/savedResults?season=${seasonSelector.value}&gender=${genderSelector.value}`)
+    // .then(response => response.json())
+    // .then(data => {
+    //     for (let id in data['saved_results']) {
+    //         let option = document.createElement('option');
+    //         option.value = id;
+    //         option.innerHTML = data['saved_results'][id];
+    //         selectSave.appendChild(option);
+    //     }
+    // });
+    let loadButton = document.getElementById('load-saved');
+    loadButton.addEventListener('click', function() {
+        let id = selectSave.value;
+        fetch(`/loadSaved?id=${id}&season=${seasonSelector.value}&gender=${genderSelector.value}`)
         .then(response => response.json())
         .then(data => {
             updateTables(data);
@@ -248,7 +251,7 @@ function updateData() {
     .then(data => {
         // create table dynamically
         updateTables(data);
-        updateScores(data);
+        updateScores();
     });
 }
 
@@ -269,6 +272,7 @@ function loadSeasons() {
         .then(data => {
             selector.value = data['current_season'];
             updateData();
+            updateSavedResults();
         });
     });
 }
@@ -296,8 +300,9 @@ function jsonifyResults() {
 function saveResults() {
     let results = jsonifyResults();
     let saveName = document.getElementById('save-name').value;
-
-    fetch('/saveResults', {
+    let seasonSelector = document.getElementById('season-select');
+    let genderSelector = document.getElementById('gender-select')
+    fetch(`/saveResults?season=${seasonSelector.value}&gender=${genderSelector.value}`, {
         method: 'POST',
         body: JSON.stringify({
             saveName: saveName,
@@ -318,4 +323,21 @@ function saveResults() {
 
     document.getElementById('save-name').value = '';
     document.getElementById('save-name').placeholder = 'Scenario name';
+}
+
+function updateSavedResults() {
+    let seasonSelector = document.getElementById('season-select');
+    let genderSelector = document.getElementById('gender-select');
+    let selectSave = document.getElementById('saved-results');
+    selectSave.innerHTML = '';
+    fetch(`/savedResults?season=${seasonSelector.value}&gender=${genderSelector.value}`)
+    .then(response => response.json())
+    .then(data => {
+        for (let id in data['saved_results']) {
+            let option = document.createElement('option');
+            option.value = id;
+            option.innerHTML = data['saved_results'][id];
+            selectSave.appendChild(option);
+        }
+    });
 }

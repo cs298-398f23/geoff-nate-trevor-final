@@ -9,9 +9,6 @@ r = redis.Redis(host=host, port=port, decode_responses=True)
 
 app = Flask(__name__)
 
-r.delete('saved_seasons')
-r.delete('saved_results')
-
 @app.route('/')
 def home():
     return render_template('index.html')
@@ -38,15 +35,16 @@ def results():
 @app.route('/saveResults', methods=['POST'])
 def saveResults():
     if request.method == 'POST':
-        saved = r.lrange('saved_seasons', 0, -1)
+        season = request.args.get('season')
+        gender = request.args.get('gender')
+        saved = r.lrange(f'saved_scenarios_{season}', 0, -1)
         if saved == None:
             saved = []
         next_id = len(saved)
         data = request.get_json()
         name = data['saveName']
-        r.rpush('saved_seasons', name)
-        print(name)
-        r.hset('saved_results', next_id, json.dumps(data['results']))
+        r.rpush(f'saved_scenarios_{season}{gender}', name)
+        r.hset(f'saved_results_{season}{gender}', next_id, json.dumps(data['results']))
         return {
             'id': next_id,
             'name': name
@@ -54,12 +52,16 @@ def saveResults():
     
 @app.route('/loadSaved')
 def loadSaved():
-    return json.loads(r.hget('saved_results', request.args.get('id')))
+    season = request.args.get('season')
+    gender = request.args.get('gender')
+    return json.loads(r.hget(f'saved_results_{season}{gender}', request.args.get('id')))
 
 @app.route('/savedResults')
 def savedResults():
+    season = request.args.get('season')
+    gender = request.args.get('gender')
     return {
-        'saved_results': r.lrange('saved_seasons', 0, -1)
+        'saved_results': r.lrange(f'saved_scenarios_{season}{gender}', 0, -1)
     }
 
 
