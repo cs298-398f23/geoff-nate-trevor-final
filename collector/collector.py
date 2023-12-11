@@ -34,10 +34,6 @@ seasons = {
 
 current_season_id = '4444'
 
-# clear all saved data
-# for key in r.keys('saved_*'):
-#    r.delete(key)
-
 def clear_hash(hash, seasons, r):
     for key in r.hgetall(hash).keys():
         if not key in seasons.keys():
