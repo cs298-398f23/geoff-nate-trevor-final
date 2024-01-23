@@ -21,16 +21,19 @@
 
   .select-column {
     width: 20%; /* Set the width of the column */
-    background-color: #f1f1f1;
+    background-color: #c4c2c2;
   }
 
   .data-column {
     width: 50%; /* Set the width of the column */
+    background-color: rgb(24, 23, 63);
+    color: rgb(255, 255, 255);
   }
 
   .result-column {
     width: 30%; /* Set the width of the column */
-    background-color: #f1f1f1;
+    background-color: #9d1717;
+    color: rgb(255, 255, 255);
   }
   
   table {
