@@ -9,6 +9,7 @@ port = 6379
 r = redis.Redis(host=host, port=port, decode_responses=True)
 
 seasons = {
+    '4716': 'Outdoor 2024',
     '4444': 'Indoor 2024',
     '4249': 'Outdoor 2023',
     '4011': 'Indoor 2023', 
@@ -32,7 +33,7 @@ seasons = {
     '1006': 'Indoor 2013'
 }
 
-current_season_id = '4444'
+current_season_id = '4716'
 
 def clear_hash(hash, seasons, r):
     for key in r.hgetall(hash).keys():
